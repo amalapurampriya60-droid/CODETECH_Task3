@@ -1,0 +1,56 @@
+# WEATHER PATTERN ANALYSIS
+
+# Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load Dataset
+data = pd.read_csv("weather_data.csv")
+
+# Display First Rows
+print(data.head())
+
+# Convert Date Column
+data['Date'] = pd.to_datetime(data['Date'])
+
+# ---------------- TEMPERATURE ANALYSIS ---------------- #
+plt.figure(figsize=(10,5))
+plt.plot(data['Date'], data['Temperature'], marker='o')
+plt.title("Temperature Trend")
+plt.xlabel("Date")
+plt.ylabel("Temperature")
+plt.grid(True)
+plt.show()
+
+# ---------------- HUMIDITY ANALYSIS ---------------- #
+plt.figure(figsize=(8,5))
+sns.barplot(x=data['Date'].dt.month,
+            y=data['Humidity'])
+
+plt.title("Monthly Humidity Analysis")
+plt.xlabel("Month")
+plt.ylabel("Humidity")
+plt.show()
+
+# ---------------- RAINFALL ANALYSIS ---------------- #
+monthly_rain = data.groupby(
+    data['Date'].dt.month)['Rainfall'].sum()
+
+plt.figure(figsize=(8,5))
+monthly_rain.plot(kind='bar')
+
+plt.title("Monthly Rainfall")
+plt.xlabel("Month")
+plt.ylabel("Rainfall")
+plt.show()
+
+# ---------------- WEATHER CONDITIONS ---------------- #
+plt.figure(figsize=(7,7))
+data['Weather Condition'].value_counts().plot(
+    kind='pie',
+    autopct='%1.1f%%')
+
+plt.title("Weather Conditions Distribution")
+plt.ylabel("")
+plt.show()
